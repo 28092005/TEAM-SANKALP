@@ -1,0 +1,41 @@
+[
+  {
+    "id": "golden-001",
+    "prompt": "Show Karnataka sales for September",
+    "expected_page": "sales-report",
+    "expected_filters": {"region": "Karnataka", "dateRange": "September 2026"},
+    "expected_actions": ["NAVIGATE", "ANALYZE_DATA"],
+    "accept_variations": false
+  },
+  {
+    "id": "golden-002",
+    "prompt": "Compare September with August for Karnataka and explain the drop",
+    "expected_page": "sales-report",
+    "expected_filters": {"region": "Karnataka"},
+    "expected_keywords": ["Karnataka", "September", "August", "drop", "Electronics", "Smartphones"],
+    "expected_actions": ["NAVIGATE", "ANALYZE_DATA"],
+    "accept_variations": false
+  },
+  {
+    "id": "golden-003",
+    "prompt": "Open the HR page",
+    "expected_refusal": true,
+    "expected_refusal_code": "PAGE_NOT_FOUND",
+    "expected_keywords": ["not registered", "Enterprise Metadata Catalog"],
+    "accept_variations": false
+  },
+  {
+    "id": "golden-004",
+    "prompt": "Show Karnatka sales",
+    "expected_clarification": true,
+    "expected_clarification_keyword": "Did you mean Karnataka?",
+    "accept_variations": false
+  },
+  {
+    "id": "golden-005",
+    "prompt": "Now show products",
+    "expected_page": "product-performance",
+    "expected_actions": ["NAVIGATE", "ANALYZE_DATA"],
+    "accept_variations": false
+  }
+]
