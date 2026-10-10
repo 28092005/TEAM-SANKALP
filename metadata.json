@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Context-Aware Application Agent",
+  "description": "Enterprise BI \u0026 E-Commerce platform with an autonomous context-aware agent orchestrator that understands navigation hierarchy, widgets, and filters to execute requests, navigate pages, and reason analytically.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

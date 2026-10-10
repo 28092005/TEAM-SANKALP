@@ -1,0 +1,165 @@
+================================================================================
+CONTEXT-AWARE APPLICATION AGENT - ENTERPRISE BI & E-COMMERCE PLATFORM
+COMPLETE SYSTEM ARCHITECTURE, TECHNOLOGY STACK, AND WORKING PIPELINE SPECIFICATION
+================================================================================
+
+1. EXECUTIVE SUMMARY & INITIAL PURPOSE
+--------------------------------------------------------------------------------
+The Context-Aware Application Agent is a specialized Enterprise Business Intelligence (BI)
+and E-Commerce operations platform. Rather than acting as a standard conversational chatbot,
+it implements an autonomous Context-Aware Agent Orchestrator. 
+
+The agent operates with full awareness of the application's runtime state:
+- Current viewport/route (e.g., Executive Dashboard, Sales Report, Regional Analysis)
+- Active widget registry and semantic UI capabilities
+- Dynamic filtering slots (Region, Product Category, Order Status, Date Range)
+- Underlying transactional and tabular data (Orders, SKUs, Cohorts, Monthly Trends)
+
+The agent translates unstructured natural language intents (typed or voice) into concrete UI
+navigation actions, atomic filter mutations, real-time statistical aggregations, automated data
+exports (PDF/CSV), and autonomous multi-step workflows with zero hallucination.
+
+
+2. COMPLETE SYSTEM LAYERS (3-TIER ARCHITECTURE)
+--------------------------------------------------------------------------------
+The system is architected around a strict Three-Tier Agent Blackboard Paradigm:
+
+[ TIER 1: INTENT DECOMPOSITION & HOST AGENT ORCHESTRATOR ]
+---------------------------------------------------------
+- Receives natural language queries via text or Web Speech API.
+- Guardrail Verification: Scans queries against security and safety policies, actively
+  blocking destructive mutations (e.g., DROP TABLE, DROP DATABASE, unauthorized role escalation).
+- Intent Disambiguation & Slot Filling: Extracts temporal windows (e.g., "last quarter",
+  "Q3", "MoM"), geographic regions ("Karnataka", "North", "South"), order statuses ("Cancelled",
+  "Delivered"), and product categories ("Electronics", "Home & Kitchen").
+- Sub-Task Planning: Generates a directed execution DAG (Directed Acyclic Graph) specifying
+  atomic actions: NAVIGATE -> APPLY_FILTER -> ANALYZE_DATA -> REGENERATE_DATA.
+
+[ TIER 2: MEMORY, BLACKBOARD & KNOWLEDGE GRAPH BUS ]
+---------------------------------------------------
+- Component Metadata Catalog: A semantic registry (`APP_METADATA_CATALOG`) indexing every
+  page, widget ID, widget visual type (KPI cards, charts, geo maps, tables), and supported filter slots.
+- Vector & Keyword RAG Matching: Computes keyword and semantic overlap between the user's intent
+  and the catalog to rank target viewports and relevant widgets.
+- Shared Blackboard Event Bus: Maintains an immutable live trajectory of operational telemetry
+  (`BlackboardLog[]`), logging timestamps, tiers, events, details, and status flags (info, success,
+  warning, error).
+- Session Memory: Retains conversational turns and prompt history for contextual follow-ups.
+
+[ TIER 3: EXECUTION APPAGENT & SYNCHRONIZATION ENGINE ]
+------------------------------------------------------
+- UI State Dispatcher: Synchronously updates React state (`currentPage`, `filterState`) across the
+  entire application, causing reactive re-rendering of all connected charts and tables.
+- Analytic Synthesis Engine: Computes real-time deterministic statistics (e.g., total sales volume,
+  growth percentages, cancellation rates, top-performing SKUs, cohort spending) matching filtered data.
+- Voice/TTS Synthesizer: Utilizes the browser Web Speech Synthesis API to vocalize agent summaries
+  for hands-free executive accessibility.
+- Export Engine: Generates client-side CSV and formatted, printable PDF executive reports.
+
+
+3. TECHNOLOGY STACK
+--------------------------------------------------------------------------------
+- Core Framework: React 19 (React 19.0.1) with Strict TypeScript (ES2022 / TS 7.0.2).
+- Bundler & Dev Server: Vite 8 (Vite 8.3.0) with `@vitejs/plugin-react`.
+- Styling & Design System: Tailwind CSS v4 (`@tailwindcss/vite` v4.3.3) with `@import "tailwindcss";`.
+- Icons & Visual Assets: Lucide React (`lucide-react` v0.546.0).
+- Charting & Visualizations: Recharts (`recharts` v3.10.1) for Bar Charts, Area Charts,
+  Donut/Pie Charts, and Line Charts.
+- Animation & Transitions: Motion (`motion` v12.23.24) and Tailwind CSS transitions.
+- AI & LLM SDK: `@google/genai` (v2.4.0) with support for Gemini API integration and fallback
+  rule-based heuristic engines for ultra-low latency and offline execution.
+- Export & Document Generation: Native CSV generation with RFC-4180 escaping and native CSS
+  Print Stylesheet for pixel-perfect PDF export.
+
+
+4. DETAILED FILE & COMPONENT BREAKDOWN
+--------------------------------------------------------------------------------
+1. `src/types/index.ts`:
+   - Comprehensive domain types: `PageId`, `FilterState`, `Order`, `ProductItem`, `CustomerItem`,
+     `RegionalMetric`, `MonthlyTrend`, `PageMetadata`, `AgentAction`, `AgentMessage`,
+     `BlackboardLog`, `BenchmarkTestCase`, `UserRole`, `PersonaType`.
+
+2. `src/data/metadata.ts`:
+   - Declarative Knowledge Graph for all 8 application pages:
+     * executive-dashboard: Macro KPIs, Monthly revenue trends, Region distribution, Order distribution.
+     * sales-report: Financial overview, Category sales, Transaction journals.
+     * product-performance: SKU catalog, Stock inventory levels, Units sold, Margins.
+     * regional-analysis: Geo-spatial sales by State/Zone, Top regional SKUs.
+     * customer-directory: CRM directory, Enterprise/Retail/VIP cohorts, Customer LTV.
+     * order-management: Fulfillment lifecycle, Dispatch tracking, Payment methods.
+     * benchmark-evaluation: 125 standardized test suites with latency & accuracy scoring.
+     * agent-blackboard: 3-tier architecture visualization, live telemetry bus, synthetic data generator.
+
+3. `src/data/syntheticData.ts`:
+   - Initial seed datasets: Orders across India/Global regions, Product catalog across Tech/Fashion/Home,
+     Customer records, Regional metrics, and Monthly historical trend lines.
+
+4. `src/services/agentEngine.ts`:
+   - Core `ContextAwareAgentEngine`:
+     * Dual-mode execution (Gemini 2.5/2.0 API + Instant Local Rule-Engine).
+     * `checkGuardrails`: Safety policy validator.
+     * `retrieveKnowledgeGraphMetadata`: Semantic scoring against page catalog.
+     * `decomposePlan`: Intent decomposition and atomic action plan builder.
+     * `computeAnalyticalInsights`: Real-time mathematical aggregation engine.
+
+5. `src/context/AppContext.tsx`:
+   - Central reactive state store:
+     * Active page, filters, orders, products, customers, regions, trend lines.
+     * Agent messages, thinking indicators, active execution plan.
+     * Blackboard logs stream and dynamic notifications center.
+     * Authentication state, current user persona, voice synthesis settings.
+
+6. `src/components/AgentAssistant.tsx`:
+   - Right-docked AI Agent interface:
+     * Interactive chat with collapsible step-by-step reasoning tree.
+     * Dynamic action execution progress badges (Pending, Running, Completed).
+     * Insight metrics cards with contextual deltas.
+     * Suggested follow-up prompt chips.
+     * Web Speech API microphone speech-to-text and audio speech synthesis.
+
+7. `src/components/pages/BenchmarkEvaluation.tsx`:
+   - 125-case automated benchmark suite covering Navigation, Filter & Slot Filling,
+     Analytical Reasoning, Multi-Step Orchestration, and Guardrails.
+   - Live automated test runner with real-time pass/fail rates, latency tracking,
+     and category filtering.
+
+8. `src/components/pages/AgentBlackboard.tsx`:
+   - Visual architecture blueprint explaining the 3-tier system.
+   - Live telemetry feed displaying internal event trajectories.
+   - Interactive Synthetic Data Volume Generator (1x to 5x multiplier).
+
+9. `src/components/ExportModal.tsx`:
+   - Modal facilitating high-fidelity PDF printing and instant CSV dataset downloads.
+
+10. `src/components/NotificationCenter.tsx`:
+    - Real-time notification drawer displaying transactional, system, and agent alerts.
+
+11. `src/components/LoginPage.tsx`:
+    - Multi-persona enterprise authentication suite with quick switching between:
+      * Onboarding Persona
+      * Platform Admin (Super Admin)
+      * Enterprise Admin (Store Owner / Manager)
+      * User Persona (Standard Business Analyst / Customer)
+
+
+5. STEP-BY-STEP RUNTIME EXECUTION LIFECYCLE
+--------------------------------------------------------------------------------
+When a user submits a prompt (e.g., "Show cancelled orders in North region"):
+
+1. Ingestion: AppContext captures prompt and sets `isAgentThinking = true`.
+2. Guardrail Scan: Prompt is checked for destructive commands or privilege escalation.
+3. RAG Knowledge Graph Retrieval: Metadata is scanned. "Order Management" is scored as the top
+   matching route based on keywords ("cancelled", "orders").
+4. Slot Filling & Planning:
+   - Target Page: `order-management`
+   - Filter Mutated: `status = 'Cancelled'`, `region = 'North'`
+   - Formulates Action Sequence: NAVIGATE -> APPLY_FILTER -> ANALYZE_DATA
+5. Trajectory Logging: Events are pushed to the live Blackboard Log stream.
+6. Reactive State Dispatch: AppContext updates `currentPage` and `filterState`. UI switches view
+   and filters the table instantaneously.
+7. Analytics Computation: Engine calculates exact counts, revenue impact, and percentage of
+   cancelled orders in the North zone.
+8. Message & Insights Generation: Agent outputs conversational response, analytical cards,
+   action checklist, and suggested follow-ups.
+9. Optional Audio Synthesis: If voice is toggled on, speech synthesis reads the summary aloud.
+================================================================================
